@@ -23,7 +23,7 @@ public class NexasCoreAppWeb {
     public static void conectarBaseDatos() {
         // Definir la URL de conexión correctamente con los parámetros de usuario y contraseña
         String connectionUrl = "jdbc:sqlserver://172.30.30.35:1433;"
-                                + "databaseName=NEXASCORE;"
+                                + "databaseName=BIBLIOTECA;"
                                 + "user=root;"
                                 + "password=root;"
                                 + "encrypt=true;"
@@ -59,4 +59,57 @@ public class NexasCoreAppWeb {
             System.out.println("Error al insertar el libro: " + e.getMessage());
         }
     }
+    public static void insertarPrestamo(Connection connection) {
+    String insertarPrestamo = "INSERT INTO PRESTAMO(ID_Prestamo, Titulo_Libro, ISBN, Fecha_de_Prestamo, Fecha_de_Devolucion) VALUES(?, ?, ?, ?, ?)";
+
+    try (PreparedStatement stmt = connection.prepareStatement(insertarPrestamo)) {
+        stmt.setInt(1, 1);  // ID_Prestamo, tipo numeric
+        stmt.setString(2, "Web II");  // Titulo_Libro, tipo nvarchar
+        stmt.setString(3, "987654321");  // ISBN, tipo nvarchar
+        stmt.setString(4, "2025-02-01");  // Fecha_de_Prestamo, tipo datetime
+        stmt.setString(5, "2025-02-15");  // Fecha_de_Devolucion, tipo datetime
+
+        stmt.executeUpdate();
+        System.out.println("El préstamo fue insertado satisfactoriamente");
+
+    } catch (SQLException e) {
+        System.out.println("Error al insertar el préstamo: " + e.getMessage());
+    }
+}
+    public static void insertarRol(Connection connection) {
+    String insertarRol = "INSERT INTO ROLES(ID_Rol, Nombre, Contrasena, Identificacion, Administrador, SuperAdministrador, Usuariolibro) VALUES(?, ?, ?, ?, ?, ?, ?)";
+
+    try (PreparedStatement stmt = connection.prepareStatement(insertarRol)) {
+        stmt.setInt(1, 1);  // ID_Rol, tipo numeric
+        stmt.setString(2, "Admin");  // Nombre, tipo nvarchar
+        stmt.setString(3, "admin123");  // Contrasena, tipo nvarchar
+        stmt.setInt(4, 123456);  // Identificacion, tipo numeric
+        stmt.setInt(5, 1);  // Administrador, tipo numeric
+        stmt.setInt(6, 0);  // SuperAdministrador, tipo numeric
+        stmt.setInt(7, 1);  // Usuariolibro, tipo numeric
+
+        stmt.executeUpdate();
+        System.out.println("El rol fue insertado satisfactoriamente");
+
+    } catch (SQLException e) {
+        System.out.println("Error al insertar el rol: " + e.getMessage());
+    }
+}
+    public static void insertarUsuario(Connection connection) {
+    String insertarUsuario = "INSERT INTO USUARIO(ID_Usuario, Nombre, Direccion, Telefono) VALUES(?, ?, ?, ?)";
+
+    try (PreparedStatement stmt = connection.prepareStatement(insertarUsuario)) {
+        stmt.setInt(1, 1);  // ID_Usuario, tipo numeric
+        stmt.setString(2, "Carlos");  // Nombre, tipo nvarchar
+        stmt.setString(3, "Calle Ficticia 123");  // Direccion, tipo nvarchar
+        stmt.setInt(4, 1234567890);  // Telefono, tipo numeric
+
+        stmt.executeUpdate();
+        System.out.println("El usuario fue insertado satisfactoriamente");
+
+    } catch (SQLException e) {
+        System.out.println("Error al insertar el usuario: " + e.getMessage());
+    }
+}
+
 }
