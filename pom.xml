@@ -7,9 +7,9 @@
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>mssql-jdbc-12.8.1</groupId>
-            <artifactId>mssql-jdbc-12.8.1</artifactId>
-            <version>12.8.1</version>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>12.2.0.jre8</version> <!-- Puedes probar con una versión diferente como esta -->
         </dependency>
     </dependencies>
     <properties>

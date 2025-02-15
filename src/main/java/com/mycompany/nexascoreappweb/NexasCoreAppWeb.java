@@ -3,9 +3,12 @@ package com.mycompany.nexascoreappweb;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class NexasCoreAppWeb {
+
     // Conexión a la base de datos
     private static Connection connection;
 
@@ -15,10 +18,14 @@ public class NexasCoreAppWeb {
 
         // Verificar si la conexión es válida antes de ejecutar las inserciones
         if (connection != null) {
+            // Inserciones
             insertarLibros();
             insertarPrestamo();
             insertarRol();
             insertarUsuario();
+
+            // Leer los libros desde la base de datos
+            LeerLibro(connection);
         } else {
             System.out.println("No se pudo establecer la conexión. No se ejecutarán inserciones.");
         }
@@ -51,6 +58,33 @@ public class NexasCoreAppWeb {
         }
     }
 
+    // Método para leer los libros desde la base de datos
+    public static void LeerLibro(Connection connection) {
+        String consultaLibroSql = 
+            "SELECT TOP 1 Id_Libro, Titulo, Autor, Fecha, ISBN FROM LIBRO";
+
+        try (Statement stmt = connection.createStatement()) {
+            ResultSet rs = stmt.executeQuery(consultaLibroSql);
+
+            if (rs.next()) {
+                // Recuperar los datos de la primera fila del ResultSet
+                int id = rs.getInt("Id_Libro");
+                String nombre = rs.getString("Titulo");
+                String autor = rs.getString("Autor");
+                String fecha = rs.getString("Fecha");
+                String isbn = rs.getString("ISBN");
+
+                // Mostrar los resultados en la consola
+                System.out.println("ID: " + id + ", Título: " + nombre + ", Autor: " + autor + ", Fecha: " + fecha + ", ISBN: " + isbn);
+            } else {
+                System.out.println("No se pudo leer ningún dato de la tabla LIBRO.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al ejecutar la consulta: " + e.getMessage());
+        }
+    }
+
+    // Métodos para insertar los datos
     public static void insertarLibros() {
         if (connection == null) {
             System.out.println("No se puede insertar libros porque la conexión es nula.");
@@ -73,6 +107,7 @@ public class NexasCoreAppWeb {
         }
     }
 
+    // Método para insertar préstamo (sin cambios)
     public static void insertarPrestamo() {
         if (connection == null) {
             System.out.println("No se puede insertar préstamo porque la conexión es nula.");
@@ -96,6 +131,7 @@ public class NexasCoreAppWeb {
         }
     }
 
+    // Método para insertar rol (sin cambios)
     public static void insertarRol() {
         if (connection == null) {
             System.out.println("No se puede insertar rol porque la conexión es nula.");
@@ -121,6 +157,7 @@ public class NexasCoreAppWeb {
         }
     }
 
+    // Método para insertar usuario (sin cambios)
     public static void insertarUsuario() {
         if (connection == null) {
             System.out.println("No se puede insertar usuario porque la conexión es nula.");
@@ -143,6 +180,7 @@ public class NexasCoreAppWeb {
         }
     }
 
+    // Cerrar la conexión
     public static void cerrarConexion() {
         if (connection != null) {
             try {
